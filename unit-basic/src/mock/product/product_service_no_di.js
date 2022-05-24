@@ -1,9 +1,8 @@
-// 💩 no dependency injection
-
-const ProductClient = require('./product_client.js');
+const ProductClient = require('./product_client');
 
 class ProductService {
   constructor() {
+    // 💩 no dependency injection
     this.productClient = new ProductClient();
   }
 
