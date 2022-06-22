@@ -1,18 +1,28 @@
 class Stack {
   constructor() {
-    this.store = [];
+    this.array = [];
   }
 
-  get() {
-    return this.store;
+  size() {
+    return this.array.length;
   }
 
-  add(item) {
-    this.store.push(item);
+  push(item) {
+    this.array.push(item);
   }
 
-  remove() {
-    this.store.pop();
+  pop() {
+    if (this.size() === 0) {
+      throw new Error('Stack is empty');
+    }
+    return this.array.pop();
+  }
+
+  peek() {
+    if (this.size() === 0) {
+      throw new Error('Stack is empty');
+    }
+    return this.array[this.size() - 1];
   }
 }
 
