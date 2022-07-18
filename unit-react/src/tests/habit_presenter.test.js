@@ -9,7 +9,7 @@ describe('HabitPresenter', () => {
   let update;
 
   beforeEach(() => {
-    presenter = new HabitPresenter(habits);
+    presenter = new HabitPresenter(habits, 3);
     update = jest.fn();
   });
 
@@ -54,12 +54,29 @@ describe('HabitPresenter', () => {
     checkUpdateIsCalled();
   });
 
-  it('resets all habit counts to 0', () => {
-    presenter.reset(update);
+  it('throws an error when the max habits limit is exceeded', () => {
+    presenter.add('Eating', update);
+    expect(() => {
+      presenter.add('Eating', update);
+    }).toThrow('습관의 개수는 3 이상이 될 수 없습니다.');
+  });
 
-    expect(presenter.getHabits()[0].count).toBe(0);
-    expect(presenter.getHabits()[1].count).toBe(0);
-    checkUpdateIsCalled();
+  describe('reset', () => {
+    it('resets all habit counts to 0', () => {
+      presenter.reset(update);
+
+      expect(presenter.getHabits()[0].count).toBe(0);
+      expect(presenter.getHabits()[1].count).toBe(0);
+      checkUpdateIsCalled();
+    });
+
+    it('does not create new object when count is 0', () => {
+      const habits = presenter.getHabits();
+      presenter.reset(update);
+      const updatedHabits = presenter.getHabits();
+
+      expect(updatedHabits[1]).toBe(habits[1]);
+    });
   });
 
   function checkUpdateIsCalled() {
